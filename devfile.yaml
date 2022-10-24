@@ -5,6 +5,7 @@ metadata:
   version: 2.0.2
 parent:
   kubernetes:
+    name: rh-ee-bcaravan-test-5xqrb
     namespace: rh-ee-bcaravan-dev
 starterProjects:
   - name: nodejs-react-starter
