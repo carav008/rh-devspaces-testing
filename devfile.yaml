@@ -3,7 +3,9 @@ schemaVersion: 2.1.0
 metadata:
   name: rh-testing
   version: 2.0.2
-  namespace: rh-ee-bcaravan-dev
+parent:
+  kubernetes:
+    namespace: rh-ee-bcaravan-dev
 starterProjects:
   - name: nodejs-react-starter
     git:
