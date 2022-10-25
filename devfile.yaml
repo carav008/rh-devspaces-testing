@@ -1,42 +1,32 @@
-
 schemaVersion: 2.1.0
 metadata:
-  name: rh-testing
-  version: 2.0.2
-parent:
-  kubernetes:
-    name: rh-ee-bcaravan-test-5xqrb
-    namespace: rh-ee-bcaravan-dev
-starterProjects:
-  - name: nodejs-react-starter
-    git:
-      checkoutFrom:
-        revision: main
-      remotes:
-        origin: https://github.com/devfile-samples/devfile-stacks-nodejs-react.git
+  name: react-bdc
 components:
-  - container:
+  - name: tools
+    container:
+      image: quay.io/devfile/universal-developer-image:ubi8-0e189d9
+      memoryLimit: 1G
       endpoints:
-        - name: http-react
-          targetPort: 3000
-      image: registry.access.redhat.com/ubi8/nodejs-16:latest
-      args: ['tail', '-f', '/dev/null']
-      memoryLimit: 1024Mi
-    name: runtime
+        - exposure: public
+          name: nodejs
+          protocol: http
+          targetPort: 4100
+
 commands:
-  - exec:
-      commandLine: npm install
-      component: runtime
+  - id: install-dependencies
+    exec:
+      label: "Install all required dependencies"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "npm install"
       group:
-        isDefault: true
         kind: build
-#       workingDir: ${PROJECT_SOURCE}
-    id: install
-  - exec:
-      commandLine: npm run dev
-      component: runtime
+
+  - id: start-application
+    exec:
+      label: "Start the local server"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "npm start"
       group:
-        isDefault: true
         kind: run
-#       workingDir: ${PROJECT_SOURCE}
-    id: run
